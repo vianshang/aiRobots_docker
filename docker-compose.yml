@@ -118,3 +118,25 @@ services:
       - "DISPLAY=$DISPLAY"
       - "QT_X11_NO_MITSHM=1"
       - "XAUTHORITY=/tmp/.docker.xauth"
+
+  pybullet_stable_baselines:
+    build:
+      context: ./pybullet_stable_baselines
+      dockerfile: Dockerfile     
+    image: airobots_docker:pybullet_stable_baselines
+    container_name: pybullet_stable_baselines
+    # runtime: nvidia
+    user: aiRobots
+    privileged: true
+    volumes:
+      - ~/aiRobots/Pybullet_Thesis:/home/aiRobots/aiRobots/Pybullet_Thesis/
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+      - /dev:/devl
+      - /run/udev:/run/udev:ro
+    environment:
+      # - "ROS_IP=192.168.50.248"
+      # - "ROS_MASTER_URI=http://192.168.50.149:11311"
+      - "DISPLAY=$DISPLAY"
+      - "QT_X11_NO_MITSHM=1"
+      - "XAUTHORITY=/tmp/.docker.xauth"
