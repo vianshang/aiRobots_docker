@@ -64,7 +64,7 @@ RUN apt-get update && apt list -a libcudnn7 && apt-get install -y --no-install-r
 # Install pip
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
     python3-pip \
-    python-setuptools \
+    python3-setuptools \
     && rm -rf /var/lib/apt/lists/*
 
 # install pybullet
@@ -74,5 +74,7 @@ RUN python3 -m pip install --upgrade pip --no-cache-dir \
 # RUN python3 -m pip install stable_baselines
 
 # RUN python3 -m pip install tensorflow-gpu==1.14
+
+CMD [ "sleep", "infinity" ]
 
 WORKDIR /home/${USERNAME}
