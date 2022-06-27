@@ -22,7 +22,6 @@ ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 ENV ROS_DISTRO=noetic
 
-# Update Nvidia repository keys to latest, to make apt update successful
 RUN apt-key del 7fa2af80
 RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
 RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub
@@ -53,6 +52,8 @@ RUN groupadd --gid ${USER_GID} ${USERNAME} \
     && echo "${USERNAME}:${PASSWORD}" | chpasswd \
     && chmod 0440 /etc/sudoers.d/${USERNAME}
 
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F42ED6FBAB17C654
+
 #Install cudnn
 RUN apt-get update && apt list -a libcudnn7 && apt-get install -y --no-install-recommends \
     ${NV_CUDNN_PACKAGE} \
@@ -63,16 +64,15 @@ RUN apt-get update && apt list -a libcudnn7 && apt-get install -y --no-install-r
 # Install pip
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
     python3-pip \
-    python3-setuptools \
+    python-setuptools \
     && rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip first, and then install packages
-RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install \
-    pybullet \
-    stable_baselines \
-    tensorflow-gpu==1.14
+# install pybullet
+RUN python3 -m pip install --upgrade pip --no-cache-dir \ 
+    pybullet 
 
-CMD [ "sleep", "infinity" ]
+# RUN python3 -m pip install stable_baselines
+
+# RUN python3 -m pip install tensorflow-gpu==1.14
 
 WORKDIR /home/${USERNAME}
