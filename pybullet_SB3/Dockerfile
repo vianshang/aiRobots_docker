@@ -1,14 +1,15 @@
-FROM nvidia/cudagl:10.0-runtime-ubuntu18.04
+FROM nvidia/cudagl:11.3.0-devel-ubuntu18.04
 
-# install python3.7
 # Ubuntu 18.04 installed python3.7
-# install cuda=10.0
-# install cudnn=7.4
+# pytorch 1.11.0
+# install cuda = 11.3
 
-ENV NV_CUDNN_VERSION 7.4.1.5
-ENV NV_CUDNN_PACKAGE "libcudnn7=$NV_CUDNN_VERSION-1+cuda10.0"
-ENV NV_CUDNN_PACKAGE_DEV "libcudnn7-dev=$NV_CUDNN_VERSION-1+cuda10.0"
-ENV NV_CUDNN_PACKAGE_NAME "libcudnn7"
+# install cudnn=8.2.1
+
+ENV NV_CUDNN_VERSION 8.2.1.32
+ENV NV_CUDNN_PACKAGE "libcudnn8=$NV_CUDNN_VERSION-1+cuda11.3"
+ENV NV_CUDNN_PACKAGE_DEV "libcudnn8-dev=$NV_CUDNN_VERSION-1+cuda11.3"
+ENV NV_CUDNN_PACKAGE_NAME "libcudnn8"
 
 ARG USERNAME=aiRobots
 ARG PASSWORD=aiRobots
@@ -55,7 +56,7 @@ RUN groupadd --gid ${USER_GID} ${USERNAME} \
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F42ED6FBAB17C654
 
 #Install cudnn
-RUN apt-get update && apt list -a libcudnn7 && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt list -a libcudnn8 && apt-get install -y --no-install-recommends \
     ${NV_CUDNN_PACKAGE} \
     ${NV_CUDNN_PACKAGE_DEV} \
     && apt-mark hold ${NV_CUDNN_PACKAGE_NAME} && \
@@ -64,15 +65,21 @@ RUN apt-get update && apt list -a libcudnn7 && apt-get install -y --no-install-r
 # Install pip
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
     python3-pip \
-    python-setuptools \
+    python3-setuptools \
     && rm -rf /var/lib/apt/lists/*
 
-# install pybullet
-RUN python3 -m pip install --upgrade pip --no-cache-dir \ 
-    pybullet 
+# install pybullet/ matplotlib / gym / stable_baselines3
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu113
+RUN python3 -m pip install \
+    matplotlib \
+    pybullet \ 
+    gym \
+    stable_baselines3 \
+    tensorboard
 
-# RUN python3 -m pip install stable_baselines
-
-# RUN python3 -m pip install tensorflow-gpu==1.14
+# application to execute
+# define something to do
+CMD [ "sleep", "infinity" ]
 
 WORKDIR /home/${USERNAME}
