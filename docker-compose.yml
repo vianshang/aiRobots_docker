@@ -173,7 +173,7 @@ services:
     user: John
     privileged: true
     volumes:
-      - ~/aiRobots/Gait:/home/John/aiRobots/Gait/
+      - ~/aiRobots/Pybullet_Gait_Thesis:/home/John/aiRobots/Pybullet_Gait_Thesis/
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
       - /dev:/dev
