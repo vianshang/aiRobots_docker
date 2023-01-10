@@ -11,8 +11,8 @@ ENV NV_CUDNN_PACKAGE "libcudnn8=$NV_CUDNN_VERSION-1+cuda11.3"
 ENV NV_CUDNN_PACKAGE_DEV "libcudnn8-dev=$NV_CUDNN_VERSION-1+cuda11.3"
 ENV NV_CUDNN_PACKAGE_NAME "libcudnn8"
 
-ARG USERNAME=airobots 
-ARG PASSWORD=aiRobots
+ARG USERNAME=John 
+ARG PASSWORD=John
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
@@ -76,8 +76,7 @@ RUN python3 -m pip install \
     pybullet \ 
     gym \
     stable_baselines3 \
-    tensorboard
-RUN python3 -m pip install jupyter notebook
+    tensorboard 
 # application to execute
 # define something to do
 CMD [ "sleep", "infinity" ]

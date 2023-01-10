@@ -184,3 +184,48 @@ services:
       - "DISPLAY=$DISPLAY"
       - "QT_X11_NO_MITSHM=1"
       - "XAUTHORITY=/tmp/.docker.xauth"
+
+  PPO_slope:
+    build:
+      context: ./PPO_slope
+      dockerfile: Dockerfile     
+    image: airobots_docker:PPO_slope
+    container_name: PPO_slope 
+    runtime: nvidia # used in docker to GPU
+    user: John
+    privileged: true
+    volumes:
+      - ~/aiRobots/Training/PPO_slope/Pybullet_Thesis:/home/John/aiRobots/PPO_slope/Pybullet_Thesis/
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+      - /dev:/dev
+      - /run/udev:/run/udev:ro
+    environment:
+      # - "ROS_IP=192.168.50.248"
+      # - "ROS_MASTER_URI=http://192.168.50.149:11311"
+      - "DISPLAY=$DISPLAY"
+      - "QT_X11_NO_MITSHM=1"
+      - "XAUTHORITY=/tmp/.docker.xauth"
+
+
+  SAC_slope:
+    build:
+      context: ./SAC_slope
+      dockerfile: Dockerfile     
+    image: airobots_docker:SAC_slope
+    container_name: SAC_slope 
+    runtime: nvidia # used in docker to GPU
+    user: John
+    privileged: true
+    volumes:
+      - ~/aiRobots/Training/SAC_slope/Pybullet_Thesis:/home/John/aiRobots/SAC_slope/Pybullet_Thesis/
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+      - /dev:/dev
+      - /run/udev:/run/udev:ro
+    environment:
+      # - "ROS_IP=192.168.50.248"
+      # - "ROS_MASTER_URI=http://192.168.50.149:11311"
+      - "DISPLAY=$DISPLAY"
+      - "QT_X11_NO_MITSHM=1"
+      - "XAUTHORITY=/tmp/.docker.xauth"
